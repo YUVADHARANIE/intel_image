@@ -7,6 +7,9 @@ import PIL
 # Load the trained model
 model = load_model('intel_image.h5')
 
+# Define class names
+class_names = ['mountain', 'glacier', 'sea', 'forest', 'street', 'buildings']
+
 # Define the function to preprocess the uploaded image
 def preprocess_image(img):
     img = img.resize((150, 150))  # Adjust size according to your model input
@@ -29,8 +32,9 @@ if uploaded_file is not None:
     
     # Predict the class
     predictions = model.predict(img_preprocessed)
-    predicted_class = np.argmax(predictions, axis=1)
+    predicted_class_index = np.argmax(predictions, axis=1)
+    predicted_class_name = class_names[predicted_class_index[0]]
     
     # Display the result
     st.image(img, caption='Uploaded Image', use_column_width=True)
-    st.write(f'Predicted Class: {predicted_class[0]}')
+    st.write(f'Predicted Class: {predicted_class_name}')
