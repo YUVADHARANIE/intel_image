@@ -9,7 +9,7 @@ import io
 model = load_model('intel_image.h5')
 
 # Define class names
-class_names = ['glacier', 'mountain', 'buildings', 'street', 'forest', 'sea']
+class_names = ['glacier', 'mountain', 'buildings', 'street', 'sea', 'forest']
 
 # Define the function to preprocess the uploaded image
 def preprocess_image(img):
