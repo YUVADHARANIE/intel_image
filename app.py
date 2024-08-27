@@ -1,7 +1,6 @@
 import streamlit as st
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications.vgg16 import preprocess_input
 import numpy as np
 import PIL
 
@@ -10,16 +9,10 @@ model = load_model('intel_image.h5')
 
 # Define the function to preprocess the uploaded image
 def preprocess_image(img):
-    # Resize the image to match the model's input shape
-    img = img.resize((224, 224))  # Adjust size according to your model input
+    img = img.resize((150, 150))  # Adjust size according to your model input
     img_array = np.array(img)
-    
-    # Check if image has 4 channels (RGBA), convert to 3 channels (RGB)
-    if img_array.shape[-1] == 4:
-        img_array = img_array[..., :3]
-    
     img_array = np.expand_dims(img_array, axis=0)
-    img_array = preprocess_input(img_array)
+    img_array = img_array / 255.0  # Normalize the image if required
     return img_array
 
 # Define the Streamlit app
@@ -27,7 +20,7 @@ st.title("Image Classification with Your Model")
 st.write("Upload an image to get a prediction.")
 
 # Upload image
-uploaded_file = st.file_uploader("Choose an image...", type="jpg")
+uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg"])
 
 if uploaded_file is not None:
     # Load and preprocess the image
